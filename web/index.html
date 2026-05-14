@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoteWise | AI-Powered E-Voting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="particles-background"></div>
+
+    <header class="glass-header">
+        <div class="logo">Vote<span>Wise</span></div>
+        <nav id="main-nav">
+            <button onclick="app.showSection('login-section')" class="nav-btn">Voter Login</button>
+            <button onclick="app.showSection('register-section')" class="nav-btn">Register</button>
+            <button onclick="app.showSection('admin-login-section')" class="nav-btn admin-btn">Admin</button>
+        </nav>
+        <button id="logout-btn" class="nav-btn hidden" onclick="app.logout()">Logout</button>
+    </header>
+
+    <main id="app-container">
+        
+        <!-- Voter Login Section -->
+        <section id="login-section" class="card active">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Secure, encrypted voting at your fingertips.</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Voter ID</label>
+                    <input type="text" id="login-id" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" required>
+                </div>
+                <button type="submit" class="primary-btn">Login</button>
+            </form>
+            <div id="login-error" class="error-msg"></div>
+        </section>
+
+        <!-- Voter Registration Section -->
+        <section id="register-section" class="card hidden">
+            <h2>Join VoteWise</h2>
+            <p class="subtitle">Register to cast your secure vote.</p>
+            <form id="register-form">
+                <div class="input-group">
+                    <label>Voter ID</label>
+                    <input type="text" id="reg-id" required>
+                </div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Age</label>
+                        <input type="number" id="reg-age" min="18" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Constituency</label>
+                        <select id="reg-constituency" required>
+                            <option value="NORTH_DISTRICT">North District</option>
+                            <option value="SOUTH_DISTRICT">South District</option>
+                            <option value="EAST_DISTRICT">East District</option>
+                            <option value="WEST_DISTRICT">West District</option>
+                            <option value="CENTRAL_DISTRICT">Central District</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="reg-pass" required>
+                </div>
+                <button type="submit" class="primary-btn">Register</button>
+            </form>
+            <div id="reg-msg" class="msg"></div>
+        </section>
+
+        <!-- Voter Dashboard Section -->
+        <section id="voter-dashboard-section" class="card hidden dashboard">
+            <h2 id="voter-welcome">Dashboard</h2>
+
+            <div id="voting-area">
+                <h3>Candidates in your Constituency</h3>
+                <div id="candidates-grid" class="grid">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <div id="feedback-area" class="hidden">
+                <h3>Voted Successfully! <span class="encrypted-badge">🔒 Encrypted</span></h3>
+                <div class="ai-box sentiment-box">
+                    <h4>📝 Quick Feedback (AI Sentiment Analysis)</h4>
+                    <input type="text" id="feedback-input" placeholder="How was your experience? (e.g. good, fast, hard)">
+                    <button onclick="app.submitFeedback()" class="secondary-btn">Submit</button>
+                    <div id="sentiment-result" class="highlight-text mt-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Login Section -->
+        <section id="admin-login-section" class="card hidden">
+            <h2>Admin Portal</h2>
+            <form id="admin-login-form">
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="admin-user" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="admin-pass" required>
+                </div>
+                <button type="submit" class="primary-btn admin-btn">Access Portal</button>
+            </form>
+            <div id="admin-login-error" class="error-msg"></div>
+        </section>
+
+        <!-- Admin Dashboard Section -->
+        <section id="admin-dashboard-section" class="card hidden dashboard">
+            <h2>Admin Control Panel</h2>
+            <div class="admin-controls">
+                <button onclick="app.toggleElection()" id="toggle-election-btn" class="primary-btn">Toggle Election Status</button>
+                <button onclick="app.generateResults()" class="secondary-btn">Generate Results</button>
+            </div>
+            <div id="election-status-display" class="highlight-text mt-2"></div>
+            
+            <div class="split-layout mt-4">
+                <div class="add-candidate-box">
+                    <h3>Add Candidate</h3>
+                    <form id="add-candidate-form">
+                        <input type="text" id="cand-id" placeholder="Candidate ID" required>
+                        <input type="text" id="cand-name" placeholder="Name" required>
+                        <input type="text" id="cand-party" placeholder="Party" required>
+                        <select id="cand-constituency" required>
+                            <option value="NORTH_DISTRICT">North District</option>
+                            <option value="SOUTH_DISTRICT">South District</option>
+                            <option value="EAST_DISTRICT">East District</option>
+                            <option value="WEST_DISTRICT">West District</option>
+                            <option value="CENTRAL_DISTRICT">Central District</option>
+                        </select>
+                        <input type="text" id="cand-manifesto" placeholder="Manifesto Keywords" required>
+                        <button type="submit" class="secondary-btn mt-2">Add Candidate</button>
+                    </form>
+                    <div id="admin-msg" class="msg mt-2"></div>
+                </div>
+
+                <div class="results-box">
+                    <h3 class="mt-4">Live Results</h3>
+                    <div id="results-display" class="results-content">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
