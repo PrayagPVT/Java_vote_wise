@@ -1,0 +1,7 @@
+=== Election Report ===
+
+Constituency: NORTH_DISTRICT
+Prayag (Face2Face): 0 votes (0.00%) | 
+Alice (TechParty): 2 votes (100.00%) | ********************
+>> Winner for NORTH_DISTRICT: Alice !!
+
